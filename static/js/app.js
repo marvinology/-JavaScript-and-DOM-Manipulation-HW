@@ -58,7 +58,10 @@ data.forEach(function(data) {
 });
 
 //Use d3 to update each cell's text with ufo sightings values
+function buildTable(data){
+tbody.html("");
 data.forEach(function(data) {
+  //
   console.log(data);
   var row = tbody.append("tr");
   Object.entries(data).forEach(function([key, value]) {
@@ -69,41 +72,35 @@ data.forEach(function(data) {
     cell.text(value);
   });
 });
+}
+function handleClick() {
 
-// //Refactor to use Arrow Functions
-data.forEach((data) => {
-  var row = tbody.append("tr");
-  Object.entries(data).forEach(([key, value]) => {
-    var cell = tbody.append("td");
-    cell.text(value);
-  });
-
-});
-
-/////////////
-
-// Assign the data from `data.js` to a descriptive variable
-var tableData = data;
-
-// Select the filter button
-var filterBtn = d3.select("#filter-btn");
-
-filterBtn.on("click", function() {
-
-  // Prevent the page from refreshing
+  // Prevent the form from refreshing the page
   d3.event.preventDefault();
 
   // Select the input element and get the raw HTML node
-  var inputElement = d3.select("#datetime");
+  var inputElement = d3.select("#datetime").property("value");
+  let filteredData = tableData;
 
-  // Get the value property of the input element
-  var inputValue = inputElement.property("#date-time-input");
+  // Check to see if a date was entered and filter the
+  // data using that date.
+  if (inputElement) {
+    // Apply `filter` to the table data to only keep the
+    // rows where the `datetime` value matches the filter value
+    filteredData = filteredData.filter(row => row.datetime === inputElement);
+  }
+buildTable(filteredData);
+}
 
-  console.log(inputValue);
-  console.log(tableData);
+console.log(tableData);
+d3.selectAll("#filter-btn").on("click", handleClick);
 
-  var filteredData = tableData.filter(person => person.datetime === inputValue);
-
-  console.log(filteredData);
-
- });
+// Build the table when the page loads
+buildTable(tableData);
+// // //Refactor to use Arrow Functions
+// data.forEach((data) => {
+//   var row = tbody.append("tr");
+//   Object.entries(data).forEach(([key, value]) => {
+//     var cell = tbody.append("td");
+//     cell.text(value);
+//   });
