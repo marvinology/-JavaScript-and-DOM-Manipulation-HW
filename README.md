@@ -1,1 +1,1 @@
-# -JavaScript-and-DOM-Manipulation-HW
+# -JavaScript and DOM Manipulation
